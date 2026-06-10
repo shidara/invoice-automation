@@ -48,12 +48,19 @@ yarn storybook    # http://localhost:6006
 
 - 責務分割:
   - `features/invoice/InvoicePdf.tsx` … PDFレイアウト（A4縦）
-  - `lib/pdf/renderInvoicePdf.tsx` … フォント登録＋PDFバイナリ生成
-  - `app/api/invoice/pdf/route.ts` … POSTで Invoice を受け取りPDFを返すだけ
+  - `lib/pdf/createInvoicePdfBlob.tsx` … フォント登録＋PDF Blob生成（ブラウザ内）
   - `features/invoice/downloadInvoicePdf.ts` … UI側のBlobダウンロード
+- PDFはブラウザ内で生成する（サーバー不要）。これにより GitHub Pages 等の静的ホスティングでも動作する。
 - 出力ファイル名: `invoice-{invoiceNumber}.pdf`
 - 日本語フォントは Noto Sans JP（OFL）を `public/fonts/` に同梱（`public/fonts/NOTICE.txt` 参照）
 - 保存はしない（生成→ダウンロードのみ）
+
+## デプロイ（GitHub Pages）
+
+- `master` への push で `.github/workflows/deploy.yml` が静的エクスポート（`output: 'export'`）して Pages に公開する。
+- リポジトリの Settings → Pages → Source を **「GitHub Actions」** に設定すること。
+- 公開URL: `https://shidara.github.io/invoice-automation/`
+- `basePath` はビルド時に `GITHUB_PAGES=true` のときだけ `/invoice-automation` を付与（ローカルは素のルート）。
 
 ## 状態
 

@@ -1,21 +1,12 @@
 import type { Invoice } from './types';
+import { createInvoicePdfBlob } from '@/lib/pdf/createInvoicePdfBlob';
 
 /**
- * 請求書PDFを API から取得し、ブラウザでダウンロードさせる（UI 側の責務）。
+ * 請求書PDFをブラウザ内で生成し、ダウンロードさせる（UI 側の責務）。
  * ファイル名は invoice-{invoiceNumber}.pdf。
  */
 export async function downloadInvoicePdf(invoice: Invoice): Promise<void> {
-  const res = await fetch('/api/invoice/pdf', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(invoice),
-  });
-
-  if (!res.ok) {
-    throw new Error('PDFの生成に失敗しました。時間をおいて再度お試しください。');
-  }
-
-  const blob = await res.blob();
+  const blob = await createInvoicePdfBlob(invoice);
   const url = URL.createObjectURL(blob);
   try {
     const a = document.createElement('a');
