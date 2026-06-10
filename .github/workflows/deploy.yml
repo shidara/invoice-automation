@@ -45,6 +45,9 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # enablement: true で Pages 未設定でも自動で有効化する
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/deploy-pages@v4
         id: deployment
