@@ -198,6 +198,7 @@ export default function InvoiceForm({
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
               <TextField
                 label="TEL（任意）"
+                type="tel"
                 value={invoice.issuerTel}
                 onChange={(e) => updateField('issuerTel', e.target.value)}
                 fullWidth
