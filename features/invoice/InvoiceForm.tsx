@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
+import Alert from '@mui/material/Alert';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlined';
 import AddIcon from '@mui/icons-material/Add';
 
@@ -31,6 +32,8 @@ export interface InvoiceFormProps {
   submitting?: boolean;
   /** 送信ボタンの文言 */
   submitLabel?: string;
+  /** 送信失敗時などに表示するエラーメッセージ */
+  errorMessage?: string;
 }
 
 export default function InvoiceForm({
@@ -38,6 +41,7 @@ export default function InvoiceForm({
   onSubmit,
   submitting = false,
   submitLabel = 'PDFを作成',
+  errorMessage,
 }: InvoiceFormProps) {
   const [invoice, setInvoice] = useState<Invoice>(
     () => initialInvoice ?? createEmptyInvoice(),
@@ -244,6 +248,8 @@ export default function InvoiceForm({
           />
         </Paper>
 
+        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+
         <Box sx={{ textAlign: 'right' }}>
           <Button
             type="submit"
@@ -251,7 +257,7 @@ export default function InvoiceForm({
             size="large"
             disabled={submitting}
           >
-            {submitLabel}
+            {submitting ? '作成中…' : submitLabel}
           </Button>
         </Box>
       </Stack>

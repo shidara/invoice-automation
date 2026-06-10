@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // react-pdf は Node ネイティブ依存を含むためバンドルせず外部化する。
+  serverExternalPackages: ['@react-pdf/renderer'],
 };
 
 export default nextConfig;

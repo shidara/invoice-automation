@@ -1,0 +1,8 @@
+Noto Sans JP
+Copyright 2014-2021 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'.
+
+このディレクトリのフォント（NotoSansJP-Regular.otf / NotoSansJP-Bold.otf）は
+SIL Open Font License, Version 1.1 で配布されています（商用利用可）。
+
+出典: https://github.com/notofonts/noto-cjk (Sans/SubsetOTF/JP)
+ライセンス全文: https://openfontlicense.org/

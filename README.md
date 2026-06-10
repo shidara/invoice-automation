@@ -44,10 +44,21 @@ yarn storybook    # http://localhost:6006
 | `yarn build-storybook` | Storybook ビルド |
 | `yarn lint` | ESLint |
 
+## PDF生成について
+
+- 責務分割:
+  - `features/invoice/InvoicePdf.tsx` … PDFレイアウト（A4縦）
+  - `lib/pdf/renderInvoicePdf.tsx` … フォント登録＋PDFバイナリ生成
+  - `app/api/invoice/pdf/route.ts` … POSTで Invoice を受け取りPDFを返すだけ
+  - `features/invoice/downloadInvoicePdf.ts` … UI側のBlobダウンロード
+- 出力ファイル名: `invoice-{invoiceNumber}.pdf`
+- 日本語フォントは Noto Sans JP（OFL）を `public/fonts/` に同梱（`public/fonts/NOTICE.txt` 参照）
+- 保存はしない（生成→ダウンロードのみ）
+
 ## 状態
 
 - [x] PR1: 初期構築（Next.js / MUI / Storybook / ディレクトリ）
-- [ ] PR2: Invoice 型・計算・バリデーション
-- [ ] PR3: 請求書入力フォーム
-- [ ] PR4: PDF生成 API・ダウンロード
+- [x] PR2: Invoice 型・計算・バリデーション
+- [x] PR3: 請求書入力フォーム
+- [x] PR4: PDF生成 API・ダウンロード（MVP完成）
 - [ ] PR5: README 仕上げ
