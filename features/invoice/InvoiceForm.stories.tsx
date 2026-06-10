@@ -30,7 +30,13 @@ export const Prefilled: Story = {
     initialInvoice: {
       invoiceNumber: 'INV-2026-001',
       issuedAt: '2026-06-10',
+      dueAt: '2026-06-17',
       clientName: '株式会社サンプル',
+      clientAddress: '〒100-0001\n東京都千代田区千代田1-1',
+      issuerAddress: '〒150-0001\n東京都渋谷区神宮前2-2-2',
+      issuerTel: '03-1234-5678',
+      issuerContact: '設楽 太郎',
+      bankInfo: 'サンプル銀行 渋谷支店 普通 1234567',
       title: 'Webサイト制作費',
       items: [
         { name: 'デザイン', unitPrice: 120000, quantity: 1 },

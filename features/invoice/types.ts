@@ -21,9 +21,26 @@ export interface Invoice {
   invoiceNumber: string;
   /** 発行日（ISO の yyyy-mm-dd 文字列） */
   issuedAt: string;
+  /** 振込期日（ISO の yyyy-mm-dd 文字列。発行日の7日後を自動入力） */
+  dueAt: string;
+
+  // --- 請求先（宛先） ---
   /** 請求先名 */
   clientName: string;
-  /** 件名 */
+  /** 請求先住所 */
+  clientAddress: string;
+
+  // --- 差出人（発行者） ---
+  /** 差出人住所 */
+  issuerAddress: string;
+  /** 差出人 電話番号（任意） */
+  issuerTel: string;
+  /** 差出人 担当者（任意） */
+  issuerContact: string;
+  /** 振込先 */
+  bankInfo: string;
+
+  /** 件名（任意） */
   title: string;
   /** 明細 */
   items: InvoiceItem[];
@@ -41,7 +58,13 @@ export function createEmptyInvoice(): Invoice {
   return {
     invoiceNumber: '',
     issuedAt: '',
+    dueAt: '',
     clientName: '',
+    clientAddress: '',
+    issuerAddress: '',
+    issuerTel: '',
+    issuerContact: '',
+    bankInfo: '',
     title: '',
     items: [createEmptyItem()],
     note: '',

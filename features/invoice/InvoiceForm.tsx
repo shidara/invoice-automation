@@ -22,6 +22,10 @@ import {
 import { itemAmount, calcSubtotal, calcTotal } from './calc';
 import { validateInvoice, type InvoiceErrors } from './validation';
 import { formatJPY } from '@/lib/format';
+import { addDays } from '@/lib/date';
+
+/** 振込期日は発行日の何日後にするか */
+const DUE_DAYS_AFTER_ISSUE = 7;
 
 export interface InvoiceFormProps {
   /** 初期値（未指定なら空の請求書） */
@@ -53,6 +57,15 @@ export default function InvoiceForm({
 
   const updateField = <K extends keyof Invoice>(key: K, value: Invoice[K]) => {
     setInvoice((prev) => ({ ...prev, [key]: value }));
+  };
+
+  // 発行日を変更したら振込期日を自動で +7日にする
+  const updateIssuedAt = (value: string) => {
+    setInvoice((prev) => ({
+      ...prev,
+      issuedAt: value,
+      dueAt: addDays(value, DUE_DAYS_AFTER_ISSUE),
+    }));
   };
 
   const updateItem = <K extends keyof InvoiceItem>(
@@ -110,14 +123,39 @@ export default function InvoiceForm({
                 label="発行日"
                 type="date"
                 value={invoice.issuedAt}
-                onChange={(e) => updateField('issuedAt', e.target.value)}
+                onChange={(e) => updateIssuedAt(e.target.value)}
                 error={Boolean(errors.issuedAt)}
                 helperText={errors.issuedAt}
                 slotProps={{ inputLabel: { shrink: true } }}
                 fullWidth
                 required
               />
+              <TextField
+                label="振込期日"
+                type="date"
+                value={invoice.dueAt}
+                onChange={(e) => updateField('dueAt', e.target.value)}
+                error={Boolean(errors.dueAt)}
+                helperText={errors.dueAt ?? '発行日の7日後を自動入力'}
+                slotProps={{ inputLabel: { shrink: true } }}
+                fullWidth
+                required
+              />
             </Stack>
+            <TextField
+              label="件名（任意）"
+              value={invoice.title}
+              onChange={(e) => updateField('title', e.target.value)}
+              fullWidth
+            />
+          </Stack>
+        </Paper>
+
+        <Paper variant="outlined" sx={{ p: 3 }}>
+          <Typography variant="h6" gutterBottom>
+            請求先
+          </Typography>
+          <Stack spacing={2}>
             <TextField
               label="請求先名"
               value={invoice.clientName}
@@ -128,11 +166,57 @@ export default function InvoiceForm({
               required
             />
             <TextField
-              label="件名"
-              value={invoice.title}
-              onChange={(e) => updateField('title', e.target.value)}
-              error={Boolean(errors.title)}
-              helperText={errors.title}
+              label="請求先住所"
+              value={invoice.clientAddress}
+              onChange={(e) => updateField('clientAddress', e.target.value)}
+              error={Boolean(errors.clientAddress)}
+              helperText={errors.clientAddress}
+              multiline
+              minRows={2}
+              fullWidth
+              required
+            />
+          </Stack>
+        </Paper>
+
+        <Paper variant="outlined" sx={{ p: 3 }}>
+          <Typography variant="h6" gutterBottom>
+            差出人
+          </Typography>
+          <Stack spacing={2}>
+            <TextField
+              label="差出人住所"
+              value={invoice.issuerAddress}
+              onChange={(e) => updateField('issuerAddress', e.target.value)}
+              error={Boolean(errors.issuerAddress)}
+              helperText={errors.issuerAddress}
+              multiline
+              minRows={2}
+              fullWidth
+              required
+            />
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+              <TextField
+                label="TEL（任意）"
+                value={invoice.issuerTel}
+                onChange={(e) => updateField('issuerTel', e.target.value)}
+                fullWidth
+              />
+              <TextField
+                label="担当者（任意）"
+                value={invoice.issuerContact}
+                onChange={(e) => updateField('issuerContact', e.target.value)}
+                fullWidth
+              />
+            </Stack>
+            <TextField
+              label="振込先"
+              value={invoice.bankInfo}
+              onChange={(e) => updateField('bankInfo', e.target.value)}
+              error={Boolean(errors.bankInfo)}
+              helperText={errors.bankInfo}
+              multiline
+              minRows={2}
               fullWidth
               required
             />

@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 24,
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
@@ -33,15 +33,33 @@ const styles = StyleSheet.create({
     fontSize: 10,
     textAlign: 'right',
   },
-  clientName: {
-    fontSize: 14,
+  parties: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 18,
+  },
+  party: {
+    width: '48%',
+  },
+  partyLabel: {
+    fontSize: 9,
+    color: '#6750A4',
     fontWeight: 'bold',
-    marginBottom: 4,
+    marginBottom: 3,
+  },
+  partyName: {
+    fontSize: 13,
+    fontWeight: 'bold',
+    marginBottom: 2,
+  },
+  partyLine: {
+    fontSize: 9.5,
+    color: '#333',
   },
   subject: {
     fontSize: 11,
     color: '#444',
-    marginBottom: 16,
+    marginBottom: 12,
   },
   totalBox: {
     backgroundColor: '#F3F0FA',
@@ -100,15 +118,15 @@ const styles = StyleSheet.create({
   },
   summaryTotalLabel: { fontSize: 12, fontWeight: 'bold' },
   summaryTotalValue: { fontSize: 12, fontWeight: 'bold' },
-  noteSection: {
-    marginTop: 28,
+  infoSection: {
+    marginTop: 24,
   },
-  noteLabel: {
+  infoLabel: {
     fontSize: 10,
     fontWeight: 'bold',
     marginBottom: 4,
   },
-  noteBody: {
+  infoBody: {
     fontSize: 10,
     color: '#444',
   },
@@ -130,11 +148,31 @@ export default function InvoicePdf({ invoice }: InvoicePdfProps) {
           <View style={styles.meta}>
             <Text>請求書番号: {invoice.invoiceNumber}</Text>
             <Text>発行日: {invoice.issuedAt}</Text>
+            <Text>振込期日: {invoice.dueAt}</Text>
           </View>
         </View>
 
-        <Text style={styles.clientName}>{invoice.clientName} 御中</Text>
-        <Text style={styles.subject}>件名: {invoice.title}</Text>
+        <View style={styles.parties}>
+          <View style={styles.party}>
+            <Text style={styles.partyLabel}>請求先</Text>
+            <Text style={styles.partyName}>{invoice.clientName} 御中</Text>
+            <Text style={styles.partyLine}>{invoice.clientAddress}</Text>
+          </View>
+          <View style={styles.party}>
+            <Text style={styles.partyLabel}>差出人</Text>
+            <Text style={styles.partyLine}>{invoice.issuerAddress}</Text>
+            {invoice.issuerTel.trim() !== '' && (
+              <Text style={styles.partyLine}>TEL: {invoice.issuerTel}</Text>
+            )}
+            {invoice.issuerContact.trim() !== '' && (
+              <Text style={styles.partyLine}>担当: {invoice.issuerContact}</Text>
+            )}
+          </View>
+        </View>
+
+        {invoice.title.trim() !== '' && (
+          <Text style={styles.subject}>件名: {invoice.title}</Text>
+        )}
 
         <View style={styles.totalBox}>
           <Text style={styles.totalBoxLabel}>ご請求金額</Text>
@@ -168,10 +206,15 @@ export default function InvoicePdf({ invoice }: InvoicePdfProps) {
           </View>
         </View>
 
+        <View style={styles.infoSection}>
+          <Text style={styles.infoLabel}>お振込先</Text>
+          <Text style={styles.infoBody}>{invoice.bankInfo}</Text>
+        </View>
+
         {invoice.note.trim() !== '' && (
-          <View style={styles.noteSection}>
-            <Text style={styles.noteLabel}>備考</Text>
-            <Text style={styles.noteBody}>{invoice.note}</Text>
+          <View style={styles.infoSection}>
+            <Text style={styles.infoLabel}>備考</Text>
+            <Text style={styles.infoBody}>{invoice.note}</Text>
           </View>
         )}
       </Page>

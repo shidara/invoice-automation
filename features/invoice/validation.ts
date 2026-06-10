@@ -16,8 +16,11 @@ export interface ItemErrors {
 export interface InvoiceErrors {
   invoiceNumber?: string;
   issuedAt?: string;
+  dueAt?: string;
   clientName?: string;
-  title?: string;
+  clientAddress?: string;
+  issuerAddress?: string;
+  bankInfo?: string;
   /** 明細全体に対するエラー（例: 1件以上必要） */
   items?: string;
   /** 明細行ごとのエラー（index 対応） */
@@ -45,12 +48,24 @@ export function validateInvoice(invoice: Invoice): ValidationResult {
   } else if (!isValidDate(invoice.issuedAt)) {
     errors.issuedAt = '発行日の形式が正しくありません';
   }
+  if (isBlank(invoice.dueAt)) {
+    errors.dueAt = '振込期日を入力してください';
+  } else if (!isValidDate(invoice.dueAt)) {
+    errors.dueAt = '振込期日の形式が正しくありません';
+  }
   if (isBlank(invoice.clientName)) {
     errors.clientName = '請求先名を入力してください';
   }
-  if (isBlank(invoice.title)) {
-    errors.title = '件名を入力してください';
+  if (isBlank(invoice.clientAddress)) {
+    errors.clientAddress = '請求先住所を入力してください';
   }
+  if (isBlank(invoice.issuerAddress)) {
+    errors.issuerAddress = '差出人住所を入力してください';
+  }
+  if (isBlank(invoice.bankInfo)) {
+    errors.bankInfo = '振込先を入力してください';
+  }
+  // 件名・TEL・担当者は任意
 
   if (invoice.items.length === 0) {
     errors.items = '明細を1件以上追加してください';
