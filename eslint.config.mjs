@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // ビルド成果物（lint 対象外）
+    "storybook-static/**",
+    "coverage/**",
   ]),
 ]);
 
