@@ -12,6 +12,10 @@
 | --- | --- |
 | ![入力フォーム](docs/images/form.png) | ![生成PDF](docs/images/pdf.png) |
 
+## Demo
+
+https://shidara.github.io/invoice-automation/
+
 ## 特徴
 
 - 請求情報を入力するだけで A4縦の請求書 PDF を生成・ダウンロード
