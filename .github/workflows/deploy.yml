@@ -33,6 +33,8 @@ jobs:
         run: yarn build
         env:
           GITHUB_PAGES: 'true'
+          # LIFF（LINE内起動）用。リポジトリ Variables に登録。未設定なら通常Webとして動作。
+          NEXT_PUBLIC_LIFF_ID: ${{ vars.NEXT_PUBLIC_LIFF_ID }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

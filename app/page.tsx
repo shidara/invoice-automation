@@ -5,7 +5,8 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import InvoiceForm from '@/features/invoice/InvoiceForm';
-import { downloadInvoicePdf } from '@/features/invoice/downloadInvoicePdf';
+import { createInvoicePdfBlob } from '@/lib/pdf/createInvoicePdfBlob';
+import { deliverInvoicePdf } from '@/lib/pdf/deliverInvoicePdf';
 import type { Invoice } from '@/features/invoice/types';
 
 export default function Home() {
@@ -16,7 +17,8 @@ export default function Home() {
     setSubmitting(true);
     setError(null);
     try {
-      await downloadInvoicePdf(invoice);
+      const blob = await createInvoicePdfBlob(invoice);
+      deliverInvoicePdf(blob, { fileName: `invoice-${invoice.invoiceNumber}.pdf` });
     } catch (e) {
       setError(e instanceof Error ? e.message : 'PDFの生成に失敗しました。');
     } finally {
