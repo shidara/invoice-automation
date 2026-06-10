@@ -1,0 +1,5 @@
+/* MUI の CssBaseline でリセット・基本スタイルを適用するため、ここは最小限に留める。 */
+html,
+body {
+  height: 100%;
+}
